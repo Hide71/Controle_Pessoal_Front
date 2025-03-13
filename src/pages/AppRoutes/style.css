@@ -1,3 +1,17 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body{
+  min-height: 100vh;
+  width: 100vw;
+  background-color: rgb(94, 94, 238);
+}
+
+
 .container {
     display: flex;
     align-items: center;
@@ -61,3 +75,18 @@ h1 {
     cursor: pointer;
   }
   
+  .button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px;
+    background-color: #ca0818;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  .button:hover {
+    background-color: #9b7373;
+  }

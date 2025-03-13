@@ -1,7 +1,7 @@
-//import api from "../../services/api"
-import { getUsers, getUserById, addUser, editUser,deleteUser  } from "../../services/api"
-import { useEffect, useState, useRef } from "react"
-import './style.css'
+import { getUsers, getUserById, addUser, editUser,deleteUser  } from "../../services/userContoller"
+import { useEffect, useState,} from "react"
+import { Link } from 'react-router-dom'
+//import './AppRoutes/style.css'
 
 function User() {
     const [users, setUsers] = useState([]);
@@ -72,7 +72,11 @@ function User() {
         <div className="container">
           <h1>Usuários Cadastrados</h1>
           <button onClick={() => handleOpenModal()}>Adicionar Usuário</button>
-    
+          <th>
+             <Link to={'/'} className="button">Login</Link>
+             <Link to={'/categoria'}className="button">Categoria</Link>
+             <Link to={'/despesa'} className="button">Despesa</Link>
+          </th>
           {users.length > 0 ? (
             <table className="table">
               <thead>
