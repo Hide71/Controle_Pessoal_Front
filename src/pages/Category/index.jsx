@@ -1,39 +1,117 @@
-import React from "react"
+import { getCategories, getCategoryById, addCategory, editCategory, deleteCategory} from "../../services/categoryController" 
 import { useEffect, useState } from "react"
-import api from "../../services/api"
-import '../AppRoutes/style.css'
 import { Link } from 'react-router-dom'
 
 
 function Category()
 {
-    const[allCategory, setAllCategory] = useState([])
-    async function GetCategory()
-    {
-        const categoriesFromApi = await api.get("v1/category")
-        setAllCategory(categoriesFromApi.data)
-    }
+    const[categories, setCategories] = useState([])
+    const[modalOpen, setModalOpen] = useState(false)
+    const[currentCategory, setCurrentCategory] = useState(null)
+    const[categoryName, setCategoryName] = useState(" ")
+
     useEffect(() => {
-       GetCategory()
+       const fetchCategories = async()=>{
+        try {
+            const data = await getCategories()
+            setCategories(data)
+        } catch (error) {
+            console.error("Erro ao buscar categorias:", error)
+            
+        }
+       }
+       fetchCategories()
    
      },[]
    )
+    const handleOpenModal = (category = null) => {
+        if (category) {
+            setCurrentCategory(category)
+            setCategoryName(category.categoryName)
+        } else {
+            setCurrentCategory(null)
+            setCategoryName('')
+        }
+        setModalOpen(true)
+    }
+    const handleCloseModal = () => {
+        setModalOpen(false)
+    }
+
+    const handleSave = async () => {
+        const category = { categoryname: categoryName }
+        try {
+            if (currentCategory) {
+                await editCategory(currentCategory.id, category)
+            } else {
+                await addCategory(category)
+            }
+            const data = await getCategories()
+            setCategories(data)
+            handleCloseModal()
+        } catch (error) {
+            console.error('Erro ao salvar categoria:', error)
+        }
+    }
+    const handleDelete = async (id) => {
+        try {
+            await deleteCategory(id)
+            const data = await getCategories()
+            setCategories(data)
+        } catch (error) {
+            console.error('Erro ao deletar categoria:', error)
+        }
+    }
+     
    
     return(
-        <div >
+        <div className="center-div">
             <h1>Categorias</h1>
-            <Link to={'/'}className="button">login</Link>
-            <Link to={'/usuario'}className="button">Usuarios</Link>
-            <Link to={'/despesa'}className="button"> Despesas</Link>
+            <Link to={'/'} className="button">login</Link>
+            <Link to={'/usuario'} className="button">Usuarios</Link>
+            <Link to={'/despesa'} className="button"> Despesas</Link>
+            <button onClick={() => handleOpenModal()}>Adicionar Categoria</button>
             <div className="container">
-                {allCategory.map((category) => (
-                    <div key={category.id}>
-                        <div className="card">
-                            <p>Categoria: <span>{category.categoryName}</span></p>
-                        </div>
+                {categories.length > 0 ? (
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th>Categoria</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {categories.map((category) => (
+                                <tr key={category.id}>
+                                    <td>
+                                        <p><span>{category.categoryName}</span></p>
+                                    </td>
+                                    <td>
+                                        <button onClick={() => handleOpenModal(category)}>Editar</button>
+                                        <button onClick={() => handleDelete(category.id)}>Excluir</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                ): (
+                    <p>nenhuma categoria encontrada</p>
+                )}
+
+                {modalOpen && (
+                    <div className="modal">
+                        <h2>{currentCategory ? 'Editar Categoria' : 'Adicionar Categoria'}</h2>
+                        <input
+                            type="text"
+                            value={categoryName}
+                            onChange={(e) => setCategoryName(e.target.value)}
+                            placeholder="Categoria"
+                        />
+                        <button onClick={handleSave}>Salvar</button>
+                        <button onClick={handleCloseModal}>Fechar</button>
                     </div>
-                ))}  
-                
+                )}
+
             </div>
         </div>
     )

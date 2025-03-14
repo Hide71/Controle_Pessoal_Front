@@ -10,6 +10,10 @@ body{
   width: 100vw;
   background-color: rgb(94, 94, 238);
 }
+.center-div {
+  width: 35%; 
+  margin: 0 auto; 
+}
 
 
 .container {
@@ -42,6 +46,7 @@ h1 {
     
     th {
     background-color: #f4f4f4;
+    
     }
     
     td {

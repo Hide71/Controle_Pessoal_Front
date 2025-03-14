@@ -1,7 +1,6 @@
 import { getUsers, getUserById, addUser, editUser,deleteUser  } from "../../services/userContoller"
 import { useEffect, useState,} from "react"
 import { Link } from 'react-router-dom'
-//import './AppRoutes/style.css'
 
 function User() {
     const [users, setUsers] = useState([]);
@@ -14,69 +13,70 @@ function User() {
     useEffect(() => {
       const fetchUsers = async () => {
         try {
-          const data = await getUsers();
-          setUsers(data);
+          const data = await getUsers()
+          setUsers(data)
         } catch (error) {
-          console.error('Error fetching users:', error);
+          console.error('Erro ao  buscar usuários:', error)
         }
-      };
+      }
   
-      fetchUsers();
-    }, []);
+      fetchUsers()
+    }, [])
   
     const handleOpenModal = (user = null) => {
       if (user) {
-        setCurrentUser(user);
-        setUserName(user.username);
-        setUserEmail(user.email);
-        setUserUrl(user.url);
+        setCurrentUser(user)
+        setUserName(user.username)
+        setUserEmail(user.email)
+        setUserUrl(user.url)
       } else {
-        setCurrentUser(null);
-        setUserName('');
-        setUserEmail('');
-        setUserUrl('');
+        setCurrentUser(null)
+        setUserName('')
+        setUserEmail('')
+        setUserUrl('')
       }
-      setModalOpen(true);
-    };
+      setModalOpen(true)
+    }
   
     const handleCloseModal = () => {
-      setModalOpen(false);
-    };
+      setModalOpen(false)
+    }
   
     const handleSave = async () => {
-      const user = { username: userName, email: userEmail, url:userUrl };
+      const user = { username: userName, email: userEmail, url:userUrl }
       try {
         if (currentUser) {
-          await editUser(currentUser.id, user);
+          await editUser(currentUser.id, user)
         } else {
-          await addUser(user);
+          await addUser(user)
         }
-        const data = await getUsers();
-        setUsers(data);
-        handleCloseModal();
+        const data = await getUsers()
+        setUsers(data)
+        handleCloseModal()
       } catch (error) {
-        console.error('Error saving user:', error);
+        console.error('Erro ao salvar usuario:', error)
       }
-    };
+    }
     const handleDelete = async (id) => {
         try {
-          await deleteUser(id);
-          const data = await getUsers();
-          setUsers(data);
+          await deleteUser(id)
+          const data = await getUsers()
+          setUsers(data)
         } catch (error) {
-          console.error('Error deleting user:', error);
+          console.error('Error deleting user:', error)
         }
-      };
+      }
   
     return (
-        <div className="container">
-          <h1>Usuários Cadastrados</h1>
-          <button onClick={() => handleOpenModal()}>Adicionar Usuário</button>
-          <th>
+        <div >
+          <h1>Usuários</h1>
+          <div className="center-div">
              <Link to={'/'} className="button">Login</Link>
              <Link to={'/categoria'}className="button">Categoria</Link>
              <Link to={'/despesa'} className="button">Despesa</Link>
-          </th>
+             <button onClick={() => handleOpenModal()}>Adicionar Usuário</button>
+          </div>
+          <div className="container">
           {users.length > 0 ? (
             <table className="table">
               <thead>
@@ -104,8 +104,6 @@ function User() {
           ) : (
             <p>Nenhum usuário cadastrado.</p>
           )}
-    
-          {/* Modal logic can be placed here */}
           {modalOpen && (
             <div className="modal">
               <h2>{currentUser ? 'Editar Usuário' : 'Adicionar Usuário'}</h2>
@@ -131,8 +129,13 @@ function User() {
               <button onClick={handleCloseModal}>Fechar</button>
             </div>
           )}
+    
+
+          </div>
+          
+          
         </div>
-      );
+      )
     }
   
 export default User
