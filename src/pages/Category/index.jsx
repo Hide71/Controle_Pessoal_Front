@@ -69,6 +69,7 @@ function Category()
             <h1>Categorias</h1>
             <Link to={'/'} className="button">login</Link>
             <Link to={'/usuario'} className="button">Usuarios</Link>
+            <Link to={'/account'} className="button">Conta</Link>
             <Link to={'/despesa'} className="button"> Despesas</Link>
             <button onClick={() => handleOpenModal()}>Adicionar Categoria</button>
             <div className="container">

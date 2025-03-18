@@ -7,8 +7,8 @@ function User() {
     const [modalOpen, setModalOpen] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
     const [userName, setUserName] = useState('');
-    const [userEmail, setUserEmail] = useState('');
-    const [userUrl, setUserUrl] = useState('');
+    const [email, setEmail] = useState('');
+    const [url, setUrl] = useState('');
   
     useEffect(() => {
       const fetchUsers = async () => {
@@ -27,13 +27,13 @@ function User() {
       if (user) {
         setCurrentUser(user)
         setUserName(user.username)
-        setUserEmail(user.email)
-        setUserUrl(user.url)
+        setEmail(user.email)
+        setUrl(user.url)
       } else {
         setCurrentUser(null)
         setUserName('')
-        setUserEmail('')
-        setUserUrl('')
+        setEmail('')
+        setUrl('')
       }
       setModalOpen(true)
     }
@@ -43,7 +43,7 @@ function User() {
     }
   
     const handleSave = async () => {
-      const user = { username: userName, email: userEmail, url:userUrl }
+      const user = { username: userName, email: email, url: url }
       try {
         if (currentUser) {
           await editUser(currentUser.id, user)
@@ -63,16 +63,16 @@ function User() {
           const data = await getUsers()
           setUsers(data)
         } catch (error) {
-          console.error('Error deleting user:', error)
+          console.error('Erro ao deletar usuario:', error)
         }
       }
-  
     return (
         <div >
           <h1>Usuários</h1>
           <div className="center-div">
              <Link to={'/'} className="button">Login</Link>
-             <Link to={'/categoria'}className="button">Categoria</Link>
+             <Link to={'/categoria'} className="button">Categoria</Link>
+             <Link to={'/account'} className="button">Conta</Link>
              <Link to={'/despesa'} className="button">Despesa</Link>
              <button onClick={() => handleOpenModal()}>Adicionar Usuário</button>
           </div>
@@ -115,14 +115,14 @@ function User() {
               />
               <input
                 type="email"
-                value={userEmail}
-                onChange={(e) => setUserEmail(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email"
               />
               <input
                 type="text"
-                value={userUrl}
-                onChange={(e) => setUserUrl(e.target.value)}
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
                 placeholder="URL"
               />
               <button onClick={handleSave}>Salvar</button>
@@ -130,10 +130,7 @@ function User() {
             </div>
           )}
     
-
-          </div>
-          
-          
+          </div>   
         </div>
       )
     }
