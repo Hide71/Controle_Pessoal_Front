@@ -72,7 +72,7 @@ function User() {
           <div className="center-div">
              <Link to={'/'} className="button">Login</Link>
              <Link to={'/categoria'} className="button">Categoria</Link>
-             <Link to={'/account'} className="button">Conta</Link>
+             <Link to={'/conta'} className="button">Conta</Link>
              <Link to={'/despesa'} className="button">Despesa</Link>
              <button onClick={() => handleOpenModal()}>Adicionar Usuário</button>
           </div>

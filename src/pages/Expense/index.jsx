@@ -83,7 +83,7 @@ function Expense() {
                 <Link to={'/'} className="button">login</Link>
                 <Link to={'/usuario'} className="button">Usuarios</Link>
                 <Link to={'/categoria'} className="button"> Categoria</Link>
-                <Link to={'/account'} className="button">Conta</Link>
+                <Link to={'/conta'} className="button">Conta</Link>
                 <button onClick={() => handleOpenModal()}>Adicionar Despesa</button>
             </div>
             <div className="container">
