@@ -1,49 +1,87 @@
-import './style.css'
+import { userLogin } from "../../services/userContoller"
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link , useNavigate} from 'react-router-dom'
+import './style.css'
 
-function Login(){
-    const[userName, setUserName]= useState("")
-    const[passWord, setPassWord] = useState("")
+function Login() {
+  const [userName, setUserName] = useState('')
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
-    const handleSubmit = (event) =>{
-        event.preventDefault()
-        alert("enviando os dados:" + userName + "-" + passWord )
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if ( !userName || !email || !password) {
+      setError('Por favor, preencha todos os campos.');
+      return;
     }
-    return (
-        <div className='center-div'>
-            <div className='containerlogin'>
-                <form onSubmit={handleSubmit}>
-                    <h1>Acesse o sistema</h1>
-                    <div className='input-field'>
-                        <input type="email" placeholder='E-Mail'
-                            onChange={(e) => setUserName(e.target.value)} />
-                    </div>
-                    <div className='input-field'>
-                        <input type="password" placeholder='Senha'
-                            onChange={(e) => setPassWord(e.target.value)} />
-                    </div>
-                    <div className='recall-forget'>
-                        <label>
-                            <input type="checkbox"/>
-                            Lembre de mim
-                        </label>
-                        <Link to={'#'}>Esqueceu a senha?</Link>
-                    </div>
-                    <button>Entrar</button>
-                    <div className='signup-link'>
-                        <p>
-                            Não tem uma conta? <Link to={'#'}>Registrar</Link>
-                        </p>
-                        <Link to={'/usuario'} className='button'>Usuarios</Link>
-                        <Link to={'/categoria'} className='button'>Categoria</Link>
-                        <Link to={'/conta'} className='button'>Conta</Link>
-                        <Link to={'/despesa'} className='button'>Despesas</Link>
-                    </div>
-                </form>
-            </div>
-        </div>       
 
-    )
+    setIsLoading(true);
+    setError('');
+
+    try {
+      const data = await userLogin({userName, email, password });
+
+      if (data.access_token) {
+        localStorage.setItem('access_token', data.access_token);
+        alert("Sucesso!!")
+        navigate('/usuario');
+      } else {
+        setError('Usuário, Email ou senha inválidos.');
+      }
+    } catch (error) {
+      console.error('Erro ao tentar fazer login:', error);
+      setError('Erro ao tentar fazer login, usuário não está cadastrado.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="center-div">
+      <div className="containerlogin">
+        <form onSubmit={handleSubmit}>
+          <h1>Acesse o sistema</h1>
+          <div className="input-field">
+            <input
+              type="text"
+              placeholder="Nome"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+            />
+          </div>
+          <div className="input-field">
+            <input
+              type="email"
+              placeholder="E-Mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="input-field">
+            <input
+              type="password"
+              placeholder="Senha"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? 'Entrando...' : 'Entrar'}
+          </button>
+          <div className="signup-link">
+            <p>
+              Não tem uma conta? <Link to="/usuario">Registrar</Link>
+            </p>
+          </div>
+        </form>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+      </div>
+    </div>
+  );
 }
-export default Login
+
+export default Login;

@@ -8,6 +8,7 @@ function User() {
     const [currentUser, setCurrentUser] = useState(null);
     const [userName, setUserName] = useState('');
     const [email, setEmail] = useState('');
+    const [passWord, setPassWord] = useState('')
     const [url, setUrl] = useState('');
   
     useEffect(() => {
@@ -28,11 +29,13 @@ function User() {
         setCurrentUser(user)
         setUserName(user.username)
         setEmail(user.email)
+        setPassWord(user.password)
         setUrl(user.url)
       } else {
         setCurrentUser(null)
         setUserName('')
         setEmail('')
+        setPassWord('')
         setUrl('')
       }
       setModalOpen(true)
@@ -43,7 +46,7 @@ function User() {
     }
   
     const handleSave = async () => {
-      const user = { username: userName, email: email, url: url }
+      const user = { username: userName, email: email,passWord: passWord, url: url }
       try {
         if (currentUser) {
           await editUser(currentUser.id, user)
@@ -83,6 +86,7 @@ function User() {
                 <tr>
                   <th>Nome</th>
                   <th>Email</th>
+                  <th>Senha</th>
                   <th>URL</th>
                   <th>Ações</th>
                 </tr>
@@ -92,6 +96,7 @@ function User() {
                   <tr key={user.id}>
                     <td>{user.username}</td>
                     <td>{user.email}</td>
+                    <td>{user.password}</td>
                     <td>{user.url}</td>
                     <td>
                       <button onClick={() => handleOpenModal(user)}>Editar</button>
@@ -118,6 +123,12 @@ function User() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email"
+              />
+              <input
+                type="text"
+                value={passWord}
+                onChange={(e) => setPassWord(e.target.value)}
+                placeholder="senha"
               />
               <input
                 type="text"
