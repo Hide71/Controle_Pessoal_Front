@@ -9,6 +9,7 @@ function Category()
     const[modalOpen, setModalOpen] = useState(false)
     const[currentCategory, setCurrentCategory] = useState(null)
     const[categoryName, setCategoryName] = useState(" ")
+    const[userId, setUserId] = useState(null)
 
     useEffect(() => {
        const fetchCategories = async()=>{
@@ -28,9 +29,11 @@ function Category()
         if (category) {
             setCurrentCategory(category)
             setCategoryName(category.categoryName)
+            setUserId(category.userId)
         } else {
             setCurrentCategory(null)
             setCategoryName('')
+            setUserId(null)
         }
         setModalOpen(true)
     }
@@ -39,7 +42,7 @@ function Category()
     }
 
     const handleSave = async () => {
-        const category = { categoryname: categoryName }
+        const category = { categoryName: categoryName, userId: userId }
         try {
             if (currentCategory) {
                 await editCategory(currentCategory.id, category)
@@ -78,6 +81,7 @@ function Category()
                         <thead>
                             <tr>
                                 <th>Categoria</th>
+                                <th>Usuário</th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
@@ -85,7 +89,10 @@ function Category()
                             {categories.map((category) => (
                                 <tr key={category.id}>
                                     <td>
-                                        <p><span>{category.categoryName}</span></p>
+                                        <p><span>{category.CategoryName}</span></p>
+                                    </td>
+                                    <td>
+                                        <p><span>{category.userId}</span></p>
                                     </td>
                                     <td>
                                         <button onClick={() => handleOpenModal(category)}>Editar</button>
@@ -107,6 +114,12 @@ function Category()
                             value={categoryName}
                             onChange={(e) => setCategoryName(e.target.value)}
                             placeholder="Categoria"
+                        />
+                        <input
+                            type="number"
+                            value={userId}
+                            onChange={(e) => setUserId(e.target.value)}
+                            placeholder="Usuario"
                         />
                         <button onClick={handleSave}>Salvar</button>
                         <button onClick={handleCloseModal}>Fechar</button>

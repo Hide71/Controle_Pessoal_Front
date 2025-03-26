@@ -1,6 +1,6 @@
 import { getUsers, getUserById, addUser, editUser,deleteUser  } from "../../services/userContoller"
 import { useEffect, useState,} from "react"
-import { Link } from 'react-router-dom'
+import { Link, redirect } from 'react-router-dom'
 
 function User() {
     const [users, setUsers] = useState([]);
@@ -55,6 +55,7 @@ function User() {
         }
         const data = await getUsers()
         setUsers(data)
+        window.location.href = '/'
         handleCloseModal()
       } catch (error) {
         console.error('Erro ao salvar usuario:', error)
@@ -71,44 +72,11 @@ function User() {
       }
     return (
         <div >
-          <h1>Usuários</h1>
+          <h1>Cadastro de Usuários</h1>
           <div className="center-div">
-             <Link to={'/'} className="button">Login</Link>
-             <Link to={'/categoria'} className="button">Categoria</Link>
-             <Link to={'/conta'} className="button">Conta</Link>
-             <Link to={'/despesa'} className="button">Despesa</Link>
              <button onClick={() => handleOpenModal()}>Adicionar Usuário</button>
           </div>
           <div className="container">
-          {users.length > 0 ? (
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Nome</th>
-                  <th>Email</th>
-                  <th>Senha</th>
-                  <th>URL</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((user) => (
-                  <tr key={user.id}>
-                    <td>{user.username}</td>
-                    <td>{user.email}</td>
-                    <td>{user.password}</td>
-                    <td>{user.url}</td>
-                    <td>
-                      <button onClick={() => handleOpenModal(user)}>Editar</button>
-                      <button onClick={() => handleDelete(user.id)}>Excluir</button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <p>Nenhum usuário cadastrado.</p>
-          )}
           {modalOpen && (
             <div className="modal">
               <h2>{currentUser ? 'Editar Usuário' : 'Adicionar Usuário'}</h2>
@@ -129,12 +97,6 @@ function User() {
                 value={passWord}
                 onChange={(e) => setPassWord(e.target.value)}
                 placeholder="senha"
-              />
-              <input
-                type="text"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                placeholder="URL"
               />
               <button onClick={handleSave}>Salvar</button>
               <button onClick={handleCloseModal}>Fechar</button>

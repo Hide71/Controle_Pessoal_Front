@@ -43,7 +43,7 @@ function Account(){
     }
 
     const handleSave = async () => {
-        const account = { description: description, balance: balance, typeAccount: typeAccount }
+        const account = { descricao: description, balanco: balance, tipoConta: typeAccount }
         try {
             if (currentAccount) {
                 await editAccount(currentAccount.id, account)

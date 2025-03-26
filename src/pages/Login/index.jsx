@@ -28,7 +28,7 @@ function Login() {
       if (data.access_token) {
         localStorage.setItem('access_token', data.access_token);
         alert("Sucesso!!")
-        navigate('/usuario');
+        navigate('/despesa');
       } else {
         setError('Usuário, Email ou senha inválidos.');
       }
