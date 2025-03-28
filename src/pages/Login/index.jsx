@@ -1,7 +1,9 @@
 import { userLogin } from "../../services/userContoller"
+import { GoogleLogin } from '@react-oauth/google';
 import { useState } from 'react'
 import { Link , useNavigate} from 'react-router-dom'
 import './style.css'
+import ErrorBoundary from '../../services/ErrorBoundary'
 
 function Login() {
   const [userName, setUserName] = useState('')
@@ -38,7 +40,28 @@ function Login() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }
+  const handleGoogleLoginSuccess = async (response) => {
+    try {
+      const { credential } = response; // O token do Google
+      const result = await userLogin({ googleToken: credential });
+
+      if (result.access_token) {
+        localStorage.setItem('access_token', result.access_token);
+        navigate('/despesa');
+      } else {
+        setError('Erro ao autenticar com o Google.');
+      }
+    } catch (error) {
+      console.error('Erro ao tentar fazer login com o Google:', error);
+      setError('Erro ao tentar fazer login com o Google.');
+    }
+  }
+  const handleGoogleLoginFailure = (error) => {
+    console.error('Erro no login com o Google:', error);
+    setError(`Erro no Google Login: ${error.message || 'Erro desconhecido'}`);
+  }
+  
 
   return (
     <div className="center-div">
@@ -76,6 +99,18 @@ function Login() {
             <p>
               Não tem uma conta? <Link to="/usuario">Registrar</Link>
             </p>
+            <div className="container">
+              <h2>OU</h2>
+              <ErrorBoundary>
+                <GoogleLogin
+                  clientId="313667901167-d9cq0716r9ioll9uqdmf2qfa8nop0juv.apps.googleusercontent.com"
+                  buttonText="Continuar com o Google"
+                  onSuccess={handleGoogleLoginSuccess}
+                  onError={handleGoogleLoginFailure}
+                  useOneTap
+                />
+              </ErrorBoundary>
+            </div>
           </div>
         </form>
         {error && <p style={{ color: 'red' }}>{error}</p>}
