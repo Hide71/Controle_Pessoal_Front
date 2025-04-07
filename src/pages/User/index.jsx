@@ -1,111 +1,79 @@
 import { getUsers, getUserById, addUser, editUser,deleteUser  } from "../../services/userContoller"
 import { useEffect, useState,} from "react"
-import { Link, redirect } from 'react-router-dom'
+import { Link, useNavigate} from 'react-router-dom'
 
 function User() {
     const [users, setUsers] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
-    const [userName, setUserName] = useState('');
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
-    const [passWord, setPassWord] = useState('')
+    const [password, setPassword] = useState('')
     const [url, setUrl] = useState('');
+    const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
   
-    useEffect(() => {
-      const fetchUsers = async () => {
-        try {
-          const data = await getUsers()
-          setUsers(data)
-        } catch (error) {
-          console.error('Erro ao  buscar usuários:', error)
-        }
+    const handleSubmit = async (e)=> {
+      e.preventDefault()
+      console.log(email, password)
+      if(!name || !email || !password){
+        setError("por favor preencha todos os campos")
+        return
       }
-  
-      fetchUsers()
-    }, [])
-  
-    const handleOpenModal = (user = null) => {
-      if (user) {
-        setCurrentUser(user)
-        setUserName(user.username)
-        setEmail(user.email)
-        setPassWord(user.password)
-        setUrl(user.url)
-      } else {
-        setCurrentUser(null)
-        setUserName('')
-        setEmail('')
-        setPassWord('')
-        setUrl('')
-      }
-      setModalOpen(true)
-    }
-  
-    const handleCloseModal = () => {
-      setModalOpen(false)
-    }
-  
-    const handleSave = async () => {
-      const user = { username: userName, email: email,passWord: passWord, url: url }
+      setIsLoading (true)
+      setError("")
       try {
-        if (currentUser) {
-          await editUser(currentUser.id, user)
-        } else {
-          await addUser(user)
-        }
-        const data = await getUsers()
+        const data = { name, email, password}
         setUsers(data)
-        window.location.href = '/'
-        handleCloseModal()
+        await addUser(data)
+        alert("Cadastro efetuado com sucesso!");
+        navigate("/despesa");
+        
       } catch (error) {
-        console.error('Erro ao salvar usuario:', error)
+        
+      }
+      finally{
+        setIsLoading(false)
       }
     }
-    const handleDelete = async (id) => {
-        try {
-          await deleteUser(id)
-          const data = await getUsers()
-          setUsers(data)
-        } catch (error) {
-          console.error('Erro ao deletar usuario:', error)
-        }
-      }
-    return (
-        <div >
-          <h1>Cadastro de Usuários</h1>
-          <div className="center-div">
-             <button onClick={() => handleOpenModal()}>Adicionar Usuário</button>
+    return(
+      <div className="center-div">
+        <div className="containerlogin"></div>
+        <form onSubmit={handleSubmit}>
+          <h1>Cadastro de usuários</h1>
+          <div className="input-field">
+            <input
+              type="name"
+              placeholder="Nome"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
           </div>
-          <div className="container">
-          {modalOpen && (
-            <div className="modal">
-              <h2>{currentUser ? 'Editar Usuário' : 'Adicionar Usuário'}</h2>
-              <input
-                type="text"
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
-                placeholder="Nome"
-              />
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email"
-              />
-              <input
-                type="text"
-                value={passWord}
-                onChange={(e) => setPassWord(e.target.value)}
-                placeholder="senha"
-              />
-              <button onClick={handleSave}>Salvar</button>
-              <button onClick={handleCloseModal}>Fechar</button>
-            </div>
-          )}
-    
-          </div>   
-        </div>
-      )
-    }
-  
+          <div className="input-field">
+            <input
+              type="email"
+              placeholder="E-Mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="input-field">
+            <input
+              type="password"
+              placeholder="Senha"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? "Cadastrando..." : "Cadastrar"}
+          </button>
+          
+        </form>
+
+      </div>
+    )
+
+  }  
 export default User

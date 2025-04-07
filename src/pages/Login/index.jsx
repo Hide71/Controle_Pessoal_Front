@@ -16,7 +16,7 @@ function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!userName || !email || !password) {
+    if (!email || !password) {
       setError("Por favor, preencha todos os campos.");
       return;
     }
@@ -70,14 +70,6 @@ function Login() {
       <div className="containerlogin">
         <form onSubmit={handleSubmit}>
           <h1>Acesse o sistema</h1>
-          <div className="input-field">
-            <input
-              type="text"
-              placeholder="Nome"
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
-            />
-          </div>
           <div className="input-field">
             <input
               type="email"
