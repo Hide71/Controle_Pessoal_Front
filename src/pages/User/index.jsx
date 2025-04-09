@@ -28,7 +28,7 @@ function User() {
         setUsers(data)
         await addUser(data)
         alert("Cadastro efetuado com sucesso!");
-        navigate("/despesa");
+        navigate("/");
         
       } catch (error) {
         

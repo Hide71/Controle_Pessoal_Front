@@ -1,6 +1,7 @@
 import { getAccounts, getAccountById, addAccount, editAccount,deleteAccount  } from "../../services/accountContoller"
 import { useEffect, useState,} from "react"
 import { Link } from 'react-router-dom'
+import UserProfile from "../Login/userProfile";
 
 function Account(){
     const [accounts, setAccounts] = useState([]);
@@ -69,9 +70,8 @@ function Account(){
     return (
         <div>
             <h1> Conta </h1>
+            <UserProfile/>
             <div className='center-div'>
-                <Link to={'/'} className='button'>Login</Link>
-                <Link to={'/usuario'} className='button'>Usuarios</Link>
                 <Link to={'/categoria'} className='button'>Categorias</Link>
                 <Link to={'/despesa'} className='button'>Despesas</Link>
                 <button onClick={() => handleOpenModal()}>Adicionar Conta</button>

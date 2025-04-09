@@ -1,6 +1,7 @@
 import { getCategories, getCategoryById, addCategory, editCategory, deleteCategory} from "../../services/categoryController" 
 import { useEffect, useState } from "react"
 import { Link } from 'react-router-dom'
+import UserProfile from "../Login/userProfile"
 
 
 function Category()
@@ -70,8 +71,7 @@ function Category()
     return(
         <div className="center-div">
             <h1>Categorias</h1>
-            <Link to={'/'} className="button">login</Link>
-            <Link to={'/usuario'} className="button">Usuarios</Link>
+            <UserProfile/>
             <Link to={'/conta'} className="button">Conta</Link>
             <Link to={'/despesa'} className="button"> Despesas</Link>
             <button onClick={() => handleOpenModal()}>Adicionar Categoria</button>

@@ -1,6 +1,7 @@
 import { getExpenses, getExpenseById, addExpense, editExpense,deleteExpense  } from "../../services/expenseController"
 import { useEffect, useState,} from "react"
 import { Link } from 'react-router-dom'
+import UserProfile from "../Login/userProfile";
 
 function Expense() {
     const [expenses, setExpenses] = useState([]);
@@ -79,9 +80,8 @@ function Expense() {
     return(
         <div>
             <h1>Despesas</h1>
+            <UserProfile/>
             <div className="center-div">
-                <Link to={'/'} className="button">login</Link>
-                <Link to={'/usuario'} className="button">Usuarios</Link>
                 <Link to={'/categoria'} className="button"> Categoria</Link>
                 <Link to={'/conta'} className="button">Conta</Link>
                 <button onClick={() => handleOpenModal()}>Adicionar Despesa</button>
