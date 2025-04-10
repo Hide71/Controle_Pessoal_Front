@@ -9,7 +9,7 @@ function Category()
     const[categories, setCategories] = useState([])
     const[modalOpen, setModalOpen] = useState(false)
     const[currentCategory, setCurrentCategory] = useState(null)
-    const[categoryName, setCategoryName] = useState(" ")
+    const[categoryName, setCategoryName] = useState("")
     const[userId, setUserId] = useState(null)
 
     useEffect(() => {
@@ -69,12 +69,14 @@ function Category()
      
    
     return(
-        <div className="center-div">
+        <div>
             <h1>Categorias</h1>
             <UserProfile/>
-            <Link to={'/conta'} className="button">Conta</Link>
-            <Link to={'/despesa'} className="button"> Despesas</Link>
-            <button onClick={() => handleOpenModal()}>Adicionar Categoria</button>
+            <div className="center-div">
+                 <Link to={'/conta'} className="button">Conta</Link>
+                 <Link to={'/despesa'} className="button"> Despesas</Link>
+                 <button onClick={() => handleOpenModal()}>Adicionar Categoria</button>
+            </div>
             <div className="container">
                 {categories.length > 0 ? (
                     <table className="table">
@@ -89,7 +91,7 @@ function Category()
                             {categories.map((category) => (
                                 <tr key={category.id}>
                                     <td>
-                                        <p><span>{category.CategoryName}</span></p>
+                                        <p><span>{category.categoryName}</span></p>
                                     </td>
                                     <td>
                                         <p><span>{category.userId}</span></p>

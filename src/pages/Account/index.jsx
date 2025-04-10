@@ -40,13 +40,18 @@ function Account(){
     }
 
     const handleCloseModal = () => {
+        setDescription('');
+        setBalance(null);
+        setTypeAccount(null);
+        setCurrentAccount(null);
         setModalOpen(false)
     }
 
     const handleSave = async () => {
-        const account = { descricao: description, balanco: balance, tipoConta: typeAccount }
+        const account = { description: description, balance: balance, typeAccount: Number(typeAccount)}
         try {
             if (currentAccount) {
+                console.log(account)
                 await editAccount(currentAccount.id, account)
             } else {
                 await addAccount(account)
@@ -116,11 +121,11 @@ function Account(){
                         <input
                             type="number"
                             value={balance}
-                            onChange={(e) => setBalance(e.target.value)}
+                            onChange={(e) => setBalance(Number(e.target.value))}
                             placeholder="Balanço"
                         />
                         <select value={typeAccount}
-                            onChange={(e) => setTypeAccount(Number(e.target.value))} 
+                            onChange={(e) => setTypeAccount(e.target.value)} 
                             placeholder="Tipo de conta">
                             <option value="1">Corrente</option>
                             <option value="2">Poupança</option>

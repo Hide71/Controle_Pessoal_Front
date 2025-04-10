@@ -1,4 +1,6 @@
 import { getExpenses, getExpenseById, addExpense, editExpense,deleteExpense  } from "../../services/expenseController"
+import { getCategories } from "../../services/categoryController";
+import { getAccounts } from "../../services/accountContoller";
 import { useEffect, useState,} from "react"
 import { Link } from 'react-router-dom'
 import UserProfile from "../Login/userProfile";
@@ -12,19 +14,33 @@ function Expense() {
     const [date, setDate] = useState('');
     const [userId, setUserId] = useState(null);
     const [categoryId, setCategoryId] = useState(null);
-    const [accountId, setAccountId] = useState(null)
+    const [categories, setCategories] = useState([]);
+    const [accountId, setAccountId] = useState(null);
+    const [accounts, setAccounts] = useState([]);
+  
   
     useEffect(() => {
-      const fetchExpenses = async () => {
+      const fetchCategories = async () => {
         try {
-          const data = await getExpenses()
-          setExpenses(data)
+          const data = await getCategories()
+          setCategories(data)
         } catch (error) {
-          console.error('Erro ao  buscar despesas:', error)
+          console.error('Erro ao  buscar categorias:', error)
+        }
+      }
+
+      const fetchAccounts = async () =>{
+        try {
+          const data = await getAccounts()
+          setAccounts(data)
+        } catch (error) {
+          console.error('erro ao buscar contas:', error)
+          
         }
       }
   
-      fetchExpenses()
+      fetchCategories()
+      fetchAccounts()
     }, [])
   
     const handleOpenModal = (expense = null) => {
@@ -147,18 +163,31 @@ function Expense() {
                             onChange={(e) => setUserId(e.target.value)}
                             placeholder="Usuário"
                         />
-                        <input
-                            type="number"
-                            value={categoryId}
+                        <select
+                            type={categoryId}
                             onChange={(e) => setCategoryId(e.target.value)}
-                            placeholder="Categoria"
-                        />
-                        <input
-                            type="number"
-                            value={accountId}
+                            placeholder="Categoria">
+                              <option value="">selecione uma categoria</option>
+                              {categories.length > 0 && categories.map((category) =>(
+                                <option key={categoryId} value={categoryId}>
+                                  {category.categoryName}
+
+                                </option>
+                              ))}
+
+                          </select>
+                        <select
+                            type={accountId}
                             onChange={(e) => setAccountId(e.target.value)}
-                            placeholder="Conta"
-                        />
+                            placeholder="Conta">
+                              <option value="">Selecione uma conta</option>
+                              {accounts.length >0 &&  accounts.map((account) =>(
+                                 <option key={accountId} value={accountId}>
+                                  {account.typeAccount}
+                                 </option>
+                              ))}
+
+                          </select>
                         <button onClick={handleSave}>Salvar</button>
                         <button onClick={handleCloseModal}>Fechar</button>
                     </div>

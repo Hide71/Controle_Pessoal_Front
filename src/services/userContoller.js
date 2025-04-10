@@ -39,15 +39,6 @@ export const getUsers = async () => {
       throw error;
     }
   }
-export const deleteUser = async (id) => {
-    try {
-      const response = await api.delete(`${"v1/user"}/${id}`)
-      return response.data; 
-    } catch (error) {
-      console.error(`Erro ao deletar usuario ${id}:`, error)
-      throw error; 
-    }
-  }
  export const userLogin = async(user) =>{
   try {
     const response = await api.post("v1/user/login", user)
