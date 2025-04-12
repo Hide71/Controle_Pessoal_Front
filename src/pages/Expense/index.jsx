@@ -1,6 +1,7 @@
 import { getExpenses, getExpenseById, addExpense, editExpense,deleteExpense  } from "../../services/expenseController"
 import { getCategories } from "../../services/categoryController";
 import { getAccounts } from "../../services/accountContoller";
+import ErrorBoundary from "../../services/ErrorBoundary";
 import { useEffect, useState,} from "react"
 import { Link } from 'react-router-dom'
 import UserProfile from "../Login/userProfile";
@@ -69,7 +70,7 @@ function Expense() {
     }
   
     const handleSave = async () => {
-      const expense = { description: description, amount: amount, date: date, userId: userId, categoryId: categoryId}
+      const expense = { description: description, amount: amount, date: date, userId: userId, categoryId: categoryId, accountId}
       try {
         if (currentExpense) {
           await editExpense(currentExpense.id, expense)
@@ -96,7 +97,7 @@ function Expense() {
     return(
         <div>
             <h1>Despesas</h1>
-            <UserProfile/>
+            <UserProfile/> 
             <div className="center-div">
                 <Link to={'/categoria'} className="button"> Categoria</Link>
                 <Link to={'/conta'} className="button">Conta</Link>
@@ -157,33 +158,26 @@ function Expense() {
                             onChange={(e) => setDate(e.target.value)}
                             placeholder="Data"
                         />
-                         <input
-                            type="number"
-                            value={userId}
-                            onChange={(e) => setUserId(e.target.value)}
-                            placeholder="Usuário"
-                        />
                         <select
-                            type={categoryId}
                             onChange={(e) => setCategoryId(e.target.value)}
+                            value={categoryId}
                             placeholder="Categoria">
                               <option value="">selecione uma categoria</option>
                               {categories.length > 0 && categories.map((category) =>(
-                                <option key={categoryId} value={categoryId}>
+                                <option key={category.id} value={category.id}>
                                   {category.categoryName}
-
                                 </option>
                               ))}
 
                           </select>
                         <select
-                            type={accountId}
                             onChange={(e) => setAccountId(e.target.value)}
+                            value={accountId}
                             placeholder="Conta">
                               <option value="">Selecione uma conta</option>
                               {accounts.length >0 &&  accounts.map((account) =>(
-                                 <option key={accountId} value={accountId}>
-                                  {account.typeAccount}
+                                 <option key={account.id} value={account.id}>
+                                  {account.description}
                                  </option>
                               ))}
 

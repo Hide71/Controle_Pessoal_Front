@@ -16,31 +16,34 @@ function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!email || !password) {
-      setError("Por favor, preencha todos os campos.");
-      return;
-    }
-
     setIsLoading(true);
-    setError("");
+
+    if (!email || !password) {
+      setError("Por favor, preencha todos os campos.")
+      setIsLoading(false);
+      return
+    }
 
     try {
       const data = await userLogin({ userName, email, password });
 
       if (data.access_token) {
         localStorage.setItem("access_token", data.access_token);
-        alert("Sucesso!!");
+        alert(" usuario logado  com Sucesso!!");
         navigate("/despesa");
       } else {
         setError("Usuário, Email ou senha inválidos.");
       }
     } catch (error) {
       console.error("Erro ao tentar fazer login:", error);
+      alert("Erro ao tentar fazer login, usuário não está cadastrado.")
       setError("Erro ao tentar fazer login, usuário não está cadastrado.");
+
     } finally {
       setIsLoading(false);
-    }
+    }    
   };
+
   const handleGoogleLoginSuccess = async (response) => {
     try {
       const { credential } = response; // O token do Google
@@ -60,6 +63,7 @@ function Login() {
       setError("Erro ao tentar fazer login com o Google.");
     }
   };
+  
   const handleGoogleLoginFailure = (error) => {
     console.error("Erro no login com o Google:", error);
     setError(`Erro no Google Login: ${error.message || "Erro desconhecido"}`);
@@ -72,7 +76,6 @@ function Login() {
           <h1>Acesse o sistema</h1>
           <div className="input-field">
             <input
-              type="email"
               placeholder="E-Mail"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -89,24 +92,22 @@ function Login() {
           <button type="submit" disabled={isLoading}>
             {isLoading ? "Entrando..." : "Entrar"}
           </button>
-          <div className="signup-link">
+        </form>
+        <div className="signup-link">
             <p>
               Não tem uma conta? <Link to="/usuario">Registrar</Link>
             </p>
             <div className="container">
-              <h2>OU</h2>
-              <ErrorBoundary>
+              {/* <ErrorBoundary>
                 <GoogleLogin
                   clientId="313667901167-d9cq0716r9ioll9uqdmf2qfa8nop0juv.apps.googleusercontent.com"
-                  buttonText="Continuar com o Google"
                   onSuccess={handleGoogleLoginSuccess}
                   onError={handleGoogleLoginFailure}
                   useOneTap
                 />
-              </ErrorBoundary>
+              </ErrorBoundary> */}
             </div>
           </div>
-        </form>
         {error && <p style={{ color: "red" }}>{error}</p>}
       </div>
     </div>

@@ -40,11 +40,6 @@ export const getUsers = async () => {
     }
   }
  export const userLogin = async(user) =>{
-  try {
     const response = await api.post("v1/user/login", user)
     return response.data;
-  } catch (error) {
-    console.error('Erro ao logar usuario:', error)
-    throw error;
-  }
 }
