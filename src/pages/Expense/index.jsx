@@ -10,7 +10,7 @@ function Expense() {
     const [modalOpen, setModalOpen] = useState(false);
     const [currentExpense, setCurrentExpense] = useState(null);
     const [description, setDescription] = useState('');
-    const [amount, setAmount] = useState('');
+    const [amount, setAmount] = useState(null);
     const [date, setDate] = useState('');
     const [userId, setUserId] = useState(null);
     const [categoryId, setCategoryId] = useState(null);
@@ -119,7 +119,6 @@ function Expense() {
                                 <th>Descrição</th>
                                 <th>Valor</th>
                                 <th>Data</th>
-                                <th>Usuário</th>
                                 <th>Categoria</th>
                                 <th>Conta</th>
                                 <th>Ações</th>
@@ -131,8 +130,7 @@ function Expense() {
                                     <td>{expense.description}</td>
                                     <td>{expense.amount}</td>
                                     <td>{expense.date}</td>
-                                    <td>{expense.userId}</td>
-                                    <td>{expense.categoryId}</td>
+                                    <td>{expense.categoryId}.</td>
                                     <td>{expense.accountId}</td>
                                     <td>
                                         <button onClick={() => handleOpenModal(expense)}>Editar</button>

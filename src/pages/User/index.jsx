@@ -1,24 +1,22 @@
-import { getUsers, getUserById, addUser, editUser } from "../../services/userContoller"
-import { useEffect, useState,} from "react"
+import {  addUser} from "../../services/userContoller"
+import { useState,} from "react"
 import { Link, useNavigate} from 'react-router-dom'
 
+
 function User() {
-    const [users, setUsers] = useState([]);
-    const [modalOpen, setModalOpen] = useState(false);
-    const [currentUser, setCurrentUser] = useState(null);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('')
-    const [url, setUrl] = useState('');
-    const [error, setError] = useState("");
+    const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
   
     const handleSubmit = async (e)=> {
       e.preventDefault()
-      console.log(email, password)
       if(!name || !email || !password){
+
         setError("por favor preencha todos os campos")
+        alert("por favor preencha todos os campos")
         return
       }
       setIsLoading (true)
@@ -69,6 +67,7 @@ function User() {
           <button type="submit" disabled={isLoading}>
             {isLoading ? "Cadastrando..." : "Cadastrar"}
           </button>
+          <Link to={"/"} className="button"> voltar</Link>
           
         </form>
 
