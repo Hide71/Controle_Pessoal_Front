@@ -1,7 +1,6 @@
 import { getExpenses, getExpenseById, addExpense, editExpense,deleteExpense  } from "../../services/expenseController"
 import { getCategories } from "../../services/categoryController";
 import { getAccounts } from "../../services/accountContoller";
-import ErrorBoundary from "../../services/ErrorBoundary";
 import { useEffect, useState,} from "react"
 import { Link } from 'react-router-dom'
 import UserProfile from "../Login/userProfile";
@@ -18,7 +17,16 @@ function Expense() {
     const [categories, setCategories] = useState([]);
     const [accountId, setAccountId] = useState(null);
     const [accounts, setAccounts] = useState([]);
-  
+
+    const fetchExpenses = async () =>{
+      try {
+        const data = await getExpenses()
+        setExpenses(data)
+      } catch (error) {
+        console.error('erro ao buscar despesas:', error)
+        
+      }
+    } 
   
     useEffect(() => {
       const fetchCategories = async () => {
@@ -39,9 +47,10 @@ function Expense() {
           
         }
       }
-  
+
       fetchCategories()
       fetchAccounts()
+      fetchExpenses()
     }, [])
   
     const handleOpenModal = (expense = null) => {
@@ -70,15 +79,14 @@ function Expense() {
     }
   
     const handleSave = async () => {
-      const expense = { description: description, amount: amount, date: date, userId: userId, categoryId: categoryId, accountId}
+      const expense = { description: description, amount: amount, date: date, userId: userId, categoryId: categoryId, accountId: accountId}
       try {
         if (currentExpense) {
           await editExpense(currentExpense.id, expense)
         } else {
           await addExpense(expense)
         }
-        const data = await getExpenses()
-        setExpenses(data)
+        fetchExpenses()
         handleCloseModal()
       } catch (error) {
         console.error('Erro ao salvar despesa:', error)

@@ -30,11 +30,11 @@ function Category()
         if (category) {
             setCurrentCategory(category)
             setCategoryName(category.categoryName)
-            setUserId(category.userId)
+           // setUserId(category.userId)
         } else {
             setCurrentCategory(null)
             setCategoryName('')
-            setUserId(null)
+            //setUserId(null)
         }
         setModalOpen(true)
     }
@@ -83,7 +83,6 @@ function Category()
                         <thead>
                             <tr>
                                 <th>Categoria</th>
-                                <th>Usuário</th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
@@ -92,9 +91,6 @@ function Category()
                                 <tr key={category.id}>
                                     <td>
                                         <p><span>{category.categoryName}</span></p>
-                                    </td>
-                                    <td>
-                                        <p><span>{category.userId}</span></p>
                                     </td>
                                     <td>
                                         <button onClick={() => handleOpenModal(category)}>Editar</button>
@@ -116,12 +112,6 @@ function Category()
                             value={categoryName}
                             onChange={(e) => setCategoryName(e.target.value)}
                             placeholder="Categoria"
-                        />
-                        <input
-                            type="number"
-                            value={userId}
-                            onChange={(e) => setUserId(e.target.value)}
-                            placeholder="Usuario"
                         />
                         <button onClick={handleSave}>Salvar</button>
                         <button onClick={handleCloseModal}>Fechar</button>
