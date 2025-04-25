@@ -9,7 +9,7 @@ function Account(){
     const [currentAccount, setCurrentAccount] = useState(null);
     const [description, setDescription] = useState('');
     const [balance, setBalance] = useState(null);
-    const [typeAccount, setTypeAccount] = useState(null);
+    const [typeAccount, setTypeAccount] = useState(1);
 
     useEffect(() => {
         const fetchAccounts = async () => {
@@ -34,7 +34,7 @@ function Account(){
             setCurrentAccount(null)
             setDescription('')
             setBalance(null)
-            setTypeAccount(null)
+            setTypeAccount(1)
         }
         setModalOpen(true)
     }
@@ -43,7 +43,7 @@ function Account(){
         setDescription('');
         setBalance(null);
         setTypeAccount(null);
-        setCurrentAccount(null);
+        setCurrentAccount(1);
         setModalOpen(false)
     }
 
@@ -121,7 +121,7 @@ function Account(){
                         <input
                             type="number"
                             value={balance}
-                            onChange={(e) => setBalance(Number(e.target.value))}
+                            onChange={(e) => setBalance(e.target.value)}
                             placeholder="Balanço"
                         />
                         <select value={typeAccount}

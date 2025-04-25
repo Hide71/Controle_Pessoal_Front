@@ -15,35 +15,40 @@ function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    console.log("formulário enviado");
+    setError(""); 
     setIsLoading(true);
-
+  
     if (!email || !password) {
-      setError("Por favor, preencha todos os campos.")
+      setError("Por favor, preencha todos os campos.");
       setIsLoading(false);
-      return
+      return;
     }
-
+  
     try {
       const data = await userLogin({ userName, email, password });
-
-      if (data.access_token) {
+      console.log("Dados recebidos:", data);
+  
+      if (data?.access_token) {
         localStorage.setItem("access_token", data.access_token);
-        alert(" usuario logado  com Sucesso!!");
-        navigate("/despesa");
+        navigate("/despesa"); 
       } else {
-        setError("Usuário, Email ou senha inválidos.");
+        setError("Email ou senha inválidos.");
       }
-    } catch (error) {
-      console.error("Erro ao tentar fazer login:", error);
-      alert("Erro ao tentar fazer login, usuário não está cadastrado.")
-      setError("Erro ao tentar fazer login, usuário não está cadastrado.");
-
+    } catch (err) {
+      console.error("Erro no login:", err);
+  
+      if (err.response?.status === 401) {
+        setError("Email ou senha inválidos.");
+      } else {
+        setError(err.message || "Erro desconhecido ao tentar fazer login.");
+      }
     } finally {
       setIsLoading(false);
-    }    
+    }
   };
-
+  
+  
   const handleGoogleLoginSuccess = async (response) => {
     try {
       const { credential } = response; // O token do Google
@@ -98,14 +103,14 @@ function Login() {
               Não tem uma conta? <Link to="/usuario">Registrar</Link>
             </p>
             <div className="container">
-              {/* <ErrorBoundary>
+              { <ErrorBoundary>
                 <GoogleLogin
                   clientId="313667901167-d9cq0716r9ioll9uqdmf2qfa8nop0juv.apps.googleusercontent.com"
                   onSuccess={handleGoogleLoginSuccess}
                   onError={handleGoogleLoginFailure}
                   useOneTap
                 />
-              </ErrorBoundary> */}
+              </ErrorBoundary> }
             </div>
           </div>
         {error && <p style={{ color: "red" }}>{error}</p>}

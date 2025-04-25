@@ -39,7 +39,21 @@ export const getUsers = async () => {
       throw error;
     }
   }
- export const userLogin = async(user) =>{
-    const response = await api.post("v1/user/login", user)
-    return response.data;
-}
+  export const userLogin = async (user) => {
+    try {
+      const response = await api.post("v1/user/login", user);
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        // Erro do backend (como 401 ou 500)
+        throw error;
+      } else if (error.request) {
+        // Requisição feita mas sem resposta
+        throw new Error("Sem resposta do servidor.");
+      } else {
+        // Algo deu errado ao configurar a requisição
+        throw new Error("Erro ao enviar requisição.");
+      }
+    }
+  };
+  

@@ -17,16 +17,15 @@ api.interceptors.request.use(
   }
 );
 api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
-      console.error("Token expirado ou inválido.");
+    if (error.response?.status === 401) {
+      console.warn("Token expirado ou inválido.");
       localStorage.removeItem("access_token");
-      window.location.href = "/";
     }
+
     return Promise.reject(error);
   }
 );
+
 export default api;

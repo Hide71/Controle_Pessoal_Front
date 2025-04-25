@@ -8,7 +8,7 @@ import Account from '../Account'
 
 function AppRoutes() {
     return (
-        // <GoogleOAuthProvider clientId="313667901167-d9cq0716r9ioll9uqdmf2qfa8nop0juv.apps.googleusercontent.com">
+         <GoogleOAuthProvider clientId="313667901167-d9cq0716r9ioll9uqdmf2qfa8nop0juv.apps.googleusercontent.com">
             <BrowserRouter>
                 <Routes>
                     <Route path='/' element={<Login />} />
@@ -19,7 +19,7 @@ function AppRoutes() {
                     <Route path='*' element={<h1>Not Found</h1>} />
                 </Routes>
             </BrowserRouter>
-        // </GoogleOAuthProvider>
+         </GoogleOAuthProvider>
     )
 
 }
